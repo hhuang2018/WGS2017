@@ -1,0 +1,30 @@
+{
+  "/Users/Shared/anaconda/lib/python3.6/site-packages/pandas_plink/__init__.py": [
+    1516877889.0,
+    []
+  ],
+  "/Users/Shared/anaconda/lib/python3.6/site-packages/pandas_plink/bed_read.py": [
+    1516877889.0,
+    []
+  ],
+  "/Users/Shared/anaconda/lib/python3.6/site-packages/pandas_plink/builder.py": [
+    1516877889.0,
+    []
+  ],
+  "/Users/Shared/anaconda/lib/python3.6/site-packages/pandas_plink/conftest.py": [
+    1516877889.0,
+    []
+  ],
+  "/Users/Shared/anaconda/lib/python3.6/site-packages/pandas_plink/read.py": [
+    1516877889.0,
+    []
+  ],
+  "/Users/Shared/anaconda/lib/python3.6/site-packages/pandas_plink/test/__init__.py": [
+    1516877889.0,
+    []
+  ],
+  "/Users/Shared/anaconda/lib/python3.6/site-packages/pandas_plink/test/test_reader.py": [
+    1516877889.0,
+    []
+  ]
+}
