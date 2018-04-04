@@ -11,13 +11,20 @@ from utils import coreFunctions as cf
 from pandas_plink import read_plink
 #from pandas import DataFrame
 import numpy as np
+#import argparse
+
 #import graphviz
 #from pandas_plink import example_file_prefix
 
-plink_fp = "../Data/" 
-metadata_fp = "../Data/available_cases.csv"
-output = '../Data/'
-#metadata_fp = "../Data/available_cases_HLA.csv"
+#plink_fp = "../Data/" 
+#metadata_fp = "../Data/available_cases.csv"
+#output = '../Data/'
+
+plink_fp = "/home/hhuang/efs/GWASH_IMPUTED_DATA/ImputeQC/"
+metadata_fp = "/home/hhuang/data/available_cases_HLA.csv"
+output = '/home/hhuang/data/BMT_mm/'
+
+#parser = argparse.ArgumentParser()
 
 chrList = range(1, 23) # chr 1:22
 
