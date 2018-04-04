@@ -6,7 +6,8 @@ Created on Mon April 2 22:16:54 2017
 @author: hhuang2
 """
 
-#import csv
+import sys
+sys.path.append('../utils/')
 from utils import coreFunctions as cf
 from pandas_plink import read_plink
 #from pandas import DataFrame
