@@ -55,7 +55,7 @@ for chrom in chrList:
                 BMT_mm_table = bmt_gt
             else:
                 # BMT_mm_table = np.concatenate((BMT_mm_table, bmt_gt), axis =0)
-                BMT_mm_table = np.stack((BMT_mm_table, bmt_gt))
+                BMT_mm_table = np.vstack((BMT_mm_table, bmt_gt))
         np.savez(output+'BMT_mm_table_chr_'+str(chrom)+'.npz', mm_table = BMT_mm_table, ID_table = metadata_avail_cases)
     except FileNotFoundError as e:
         print(e)
