@@ -32,8 +32,9 @@ chrList = range(1, 23) # chr 1:22
 metadata_avail_cases = cf.readCaseInfo(metadata_fp)
 
 num_case = len(metadata_avail_cases['BMTcase'])
-BMT_mm_table = np.array([], dtype = 'float64')
+
 for chrom in chrList:
+    BMT_mm_table = np.array([], dtype = 'float64')
     try: 
         (bim, fam, bed) = read_plink(plink_fp+str(chrom)+'bed')
         # bim - pandas.DataFrame – Alleles.
@@ -56,7 +57,7 @@ for chrom in chrList:
         np.savez(output+'BMT_mm_table_chr_'+str(chrom)+'.npz', mm_table = BMT_mm_table, ID_table = metadata_avail_cases)
     except FileNotFoundError as e:
         print(e)
-
+        
 
 
     
