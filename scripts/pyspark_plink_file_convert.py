@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Mon April 2 22:16:54 2017
+Created on Wed Apr  4 22:12:19 2018
 
 @author: hhuang2
 """
-
 import sys
 sys.path.append('../utils/')
 from utils import coreFunctions as cf
 from pandas_plink import read_plink
 #from pandas import DataFrame
 import numpy as np
+
+from pyspark import SparkContext as sc
+
 #import argparse
 
 #import graphviz
@@ -25,7 +27,6 @@ import numpy as np
 plink_fp = "/home/hhuang/efs/GWASH_IMPUTED_DATA/ImputeQC/"
 metadata_fp = "/home/hhuang/data/available_cases.csv"
 output = '/home/hhuang/data/BMT_mm/'
-
 
 ## EMR
 plink_fp = "/home/hadoop/data/" #"s3://nmdp-plink-bucket/plink-files/ImputeQC/"
