@@ -10,7 +10,7 @@ Created on Thu Apr 12 08:56:50 2018
 from pandas_plink import read_plink
 import pandas as pd
 import numpy as np
-import argparse
+#import argparse
 
 ## I/O test
 #chrom = 22
@@ -18,15 +18,21 @@ import argparse
 #output = '../Data/'
 
 ## 
-parser = argparse.ArgumentParser()
-parser.add_argument("-i", "input", type=str,
-                    help="input file name with full directory.")
-parser.add_argument("-o", "output", type=str,
-                    help="output directory")
-args = parser.parse_args()
+#parser = argparse.ArgumentParser()
+#parser.add_argument("-i", "input", type=str,
+#                    help="input file name with full directory.")
+#parser.add_argument("-o", "output", type=str,
+#                    help="output directory")
+#args = parser.parse_args()
+#
+#plink_fp = args.input
+#output = args.output
+###
 
-plink_fp = args.input
-output = args.output
+## Private cloud
+
+plink_fp = '/mnt/cloudbiodata_nfs_2/users/hhuang/GWASH/cohort'
+output = '/mnt/cloudbiodata_nfs_2/users/hhuang/GWASH/recode/'
 
 ##
 
@@ -49,4 +55,4 @@ new_ID_list['IID'] = ['RAND'+str(CaseIDs[x]) for x in range(num_IDs)]
 
 new_ID_list_df = pd.DataFrame.from_dict(new_ID_list)
 new_ID_list_df = new_ID_list_df[['oldFID', 'oldIID', 'FID', 'IID']]
-new_ID_list_df.to_csv(output+'recode_list_'+str(chrom)+'.tsv', sep = '\t', index = False, header = False)
+new_ID_list_df.to_csv(output+'recode_list_cohort.tsv', sep = '\t', index = False, header = False)
