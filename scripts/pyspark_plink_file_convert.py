@@ -24,14 +24,14 @@ from pyspark import SparkContext as sc
 #output = '../Data/'
 
 ## EC2
-plink_fp = "/home/hhuang/efs/GWASH_IMPUTED_DATA/ImputeQC/"
-metadata_fp = "/home/hhuang/data/available_cases.csv"
-output = '/home/hhuang/data/BMT_mm/'
+#plink_fp = "/home/hhuang/efs/GWASH_IMPUTED_DATA/ImputeQC/"
+#metadata_fp = "/home/hhuang/data/available_cases.csv"
+#output = '/home/hhuang/data/BMT_mm/'
 
 ## EMR
-plink_fp = "/home/hadoop/data/" #"s3://nmdp-plink-bucket/plink-files/ImputeQC/"
-metadata_fp = "/home/hadoop/data/available_cases.csv"#"s3://nmdp-hhuang/GWAS_dev/metadata/available_cases.csv"
-output = '/home/hadoop/data/BMT_mm/'
+#plink_fp = "/home/hadoop/data/" #"s3://nmdp-plink-bucket/plink-files/ImputeQC/"
+#metadata_fp = "/home/hadoop/data/available_cases.csv"#"s3://nmdp-hhuang/GWAS_dev/metadata/available_cases.csv"
+#output = '/home/hadoop/data/BMT_mm/'
 
 #parser = argparse.ArgumentParser()
 

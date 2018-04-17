@@ -10,8 +10,10 @@ import sys
 sys.path.append('../utils/')
 from utils import coreFunctions as cf
 from pandas_plink import read_plink
+
+import pandas as pd
 #from pandas import DataFrame
-import numpy as np
+#import numpy as np
 #import argparse
 
 #import graphviz

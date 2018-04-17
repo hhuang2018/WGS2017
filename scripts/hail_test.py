@@ -14,3 +14,4 @@ for chrom in range(1, 23):
                     bim = 's3://nmdp-plink-bucket/plink-files/ImputeQC/'+ str(chrom) +'bed.bim',
                     fam = 's3://nmdp-plink-bucket/plink-files/ImputeQC/'+ str(chrom) +'bed.fam').write('nmdp-hhuang/GWAS_dev/Hail_VDS/hail_chr'+chrom+'.vds')
     
+
