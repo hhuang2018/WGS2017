@@ -166,9 +166,9 @@ def contingency_table(encoded_matrix, sample_table):
 '''
 # plot p-values
 def plot_p_value(p_value_table, title, y_label):
-    '''
+    
     plot p-values if it's an array
-    '''
+    
     if len(p_value_table) > 1:
         fig, ax = plt.subplots(figsize=(12, 4))
         sns.despine(ax=ax, offset=10)
