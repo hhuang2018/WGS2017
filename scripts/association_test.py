@@ -5,7 +5,7 @@ Created on Thu Apr 26 10:31:17 2018
 
 @author: hhuang2
 """
-
+import pickle
 import numpy as np
 import scipy as sp
 import pandas as pd
@@ -22,6 +22,11 @@ import allel; print('scikit-allel', allel.__version__)
 
 from optparse import OptionParser
 
+# save object to pickle
+def save_object(obj, filename):
+    with open(filename, 'wb') as output:  # Overwrites any existing file.
+        pickle.dump(obj, output, pickle.HIGHEST_PROTOCOL)
+'''
 # plot variant density in windows over the chromosome.
 def plot_windowed_variant_density(pos, window_size, title=None):
     # setup windows
@@ -56,7 +61,7 @@ def plot_variant_hist(f, bins=30):
     ax.set_title('Variant %s distribution' % f)
     plt.gca().set_xticks([2, 3, 4])
     return fig
-
+'''
 #  functions to compare two genotypes and return an encoded value
 def encode_mmCount(genotype1):  # , genotype2 = None):
     # if genotype2 == None:
@@ -158,7 +163,7 @@ def contingency_table(encoded_matrix, sample_table):
             p_value_table = -1
 
     return conting_table, p_value_table
-
+'''
 # plot p-values
 def plot_p_value(p_value_table, title, y_label):
     '''
@@ -180,7 +185,7 @@ def plot_p_value(p_value_table, title, y_label):
         #handles = [mpl.patches.Patch(color=palette[0]),
         #           mpl.patches.Patch(color=palette[1])]
         return fig
-
+'''
 ### File directory
 #samples_fn = '/Users/hhuang2 (Deleted)/Documents/NGSProject/2018WGS/Data/ID_table_wIndex.csv'
 
@@ -235,13 +240,16 @@ pos = variants['POS'][:]
 # pos
 
 # a plot with the SNP positions from our chosen chromosome.
-f = plot_windowed_variant_density(pos, window_size=100000, title='Raw variant density')
-f.savefig(output_fp+'/'+chromID+'RawVariantsDensity.pdf', bbox_inches='tight')
+#f = plot_windowed_variant_density(pos, window_size=100000, title='Raw variant density')
+#f.savefig(output_fp+'/'+chromID+'RawVariantsDensity.pdf', bbox_inches='tight')
+save_object(pos, output_fp+'/'+chromID+'RawVariantsDensity.pkl')
+
 
 # See how many biallelic, triallelic and quadriallelic SNPs we have.
-f2 = plot_variant_hist('numalt', bins=np.arange(1.5, 5.5, 1))
+#f2 = plot_variant_hist('numalt', bins=np.arange(1.5, 5.5, 1))
 # plt.gca().set_xticks([2, 3, 4])
-f2.savefig(output_fp+'/'+chromID+'MultiAlelles.pdf', bbox_inches='tight')
+#f2.savefig(output_fp+'/'+chromID+'MultiAlelles.pdf', bbox_inches='tight')
+save_object(variants, output_fp+'/'+chromID+'MultiAlelles.pkl')
 
 #### variant filtering
 filter_expression = '(AN >= 800)'
@@ -307,24 +315,31 @@ for gpid in Unique_GroupIDs:
 ##### chi-square test - count-based scheme
 alpha = 0.05
 contin_table, p_value_tb_count = contingency_table(encodedMatrix, samples_subset)
-f3 = plot_p_value(p_value_tb_count, 'Count-based Scheme Chi-square test p-values', alpha, 'p-values')
-f3.savefig(output_fp+'/'+chromID+'CountBased_pvalues.pdf', bbox_inches='tight')
+#3 = plot_p_value(p_value_tb_count, 'Count-based Scheme Chi-square test p-values', alpha, 'p-values')
+#f3.savefig(output_fp+'/'+chromID+'CountBased_pvalues.pdf', bbox_inches='tight')
+save_object(p_value_tb_count, output_fp+'/'+chromID+'CountBased_pvalues.pkl')
 
-positive_p_values_count = p_value_tb_count.loc[p_value_tb_count > 0]
+#positive_p_values_count = p_value_tb_count.loc[p_value_tb_count > 0]
 negative_p_values_count = p_value_tb_count.loc[p_value_tb_count <= 0]
 
 log_p_values_count = -np.log(positive_p_values_count)
-f4 = plot_p_value(log_p_values_count, 'Count-based Scheme Chi-square test p-values (-log(p))', -np.log(alpha), '-log(p)')
-f4.savefig(output_fp+'/'+chromID+'CountBased_Log_pvalues.pdf', bbox_inches='tight')
+#f4 = plot_p_value(log_p_values_count, 'Count-based Scheme Chi-square test p-values (-log(p))', -np.log(alpha), '-log(p)')
+#f4.savefig(output_fp+'/'+chromID+'CountBased_Log_pvalues.pdf', bbox_inches='tight')
+
+save_object(log_p_values_count, output_fp+'/'+chromID+'CountBased_Log_pvalues.pkl')
 
 #### chi-square test - presence/absence-based scheme
 contin_table, p_value_tb_presabs = contingency_table(encodedMatrix, samples_subset)
-f5 = plot_p_value(p_value_tb_presabs, 'Presence/absence-based Scheme Chi-square test p-values', alpha, 'p-values')
-f5.savefig(output_fp+'/'+chromID+'Presabsence_pvalues.pdf', bbox_inches='tight')
+#f5 = plot_p_value(p_value_tb_presabs, 'Presence/absence-based Scheme Chi-square test p-values', alpha, 'p-values')
+#f5.savefig(output_fp+'/'+chromID+'Presabsence_pvalues.pdf', bbox_inches='tight')
+
+save_object(p_value_tb_presabs, output_fp+'/'+chromID+'Presabsence_pvalues.pkl')
 
 positive_p_values_presabs = p_value_tb_presabs.loc[p_value_tb_presabs > 0]
-negative_p_values_presabs = p_value_tb_presabs.loc[p_value_tb_presabs <= 0]
+#negative_p_values_presabs = p_value_tb_presabs.loc[p_value_tb_presabs <= 0]
 
 log_p_values_presabs = -np.log(positive_p_values_presabs)
-f6 = plot_p_value(log_p_values_presabs, 'Presence/absence-based Scheme Chi-square test p-values (-log(p))', -np.log(alpha), '-log(p)')
-f6.savefig(output_fp+'/'+chromID+'Presabsence_Log_pvalues.pdf', bbox_inches='tight')
+#f6 = plot_p_value(log_p_values_presabs, 'Presence/absence-based Scheme Chi-square test p-values (-log(p))', -np.log(alpha), '-log(p)')
+#f6.savefig(output_fp+'/'+chromID+'Presabsence_Log_pvalues.pdf', bbox_inches='tight')
+
+save_object(p_value_tb_presabs, output_fp+'/'+chromID+'Presabsence_Log_pvalues.pkl')
