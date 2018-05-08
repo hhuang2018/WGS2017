@@ -221,7 +221,7 @@ output_fp = options.output_fp
 
 ## load variants
 callset = zarr.open_group(zarr_path, mode='r')
-variants = allel.VariantChunkedTable(callset['chr'+chromID]['variants'],
+variants = allel.VariantChunkedTable(callset[chromID]['variants'],
                                      names=['POS', 'REF', 'ALT', 'AN', 'AC', 'numalt'],
                                      index='POS')
 #chrom = 'chr22'
@@ -254,7 +254,7 @@ variants_pass_pos = pos.compress(variant_selection)
 # variants_pass_pos
 
 ## Genoyptes
-genotypes = allel.GenotypeChunkedArray(callset['chr'+chromID+'/calldata/GT'])
+genotypes = allel.GenotypeChunkedArray(callset[chromID+'/calldata/GT'])
 genotypes_subset = genotypes.subset(variant_selection, )
 
 #### Sample metadata
