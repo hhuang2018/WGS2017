@@ -214,7 +214,7 @@ parser.add_option("-q", "--quiet",
 
 (options, args) = parser.parse_args()
 
-zarr_path = options.input_filename
+zarr_path = options.zarr_filename
 chromID = options.chromID
 samples_fn = options.sample_metadata
 output_fp = options.output_fp
