@@ -12,10 +12,10 @@ import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 #%matplotlib inline
-import seaborn as sns
-sns.set_style('white')
-sns.set_style('ticks')
-sns.set_context('notebook')
+#import seaborn as sns
+#sns.set_style('white')
+#sns.set_style('ticks')
+#sns.set_context('notebook')
 import zarr
 #import h5py
 import allel; print('scikit-allel', allel.__version__)
@@ -283,7 +283,7 @@ samples_subset.reset_index(drop=True, inplace=True)
 Unique_GroupIDs = samples_subset.GroupID.unique()
 
 ##### Encoding - scheme 1: count-based
-encodedMatrix = pandas.DataFrame(data=-1, columns=[str(ggid) for ggid in Unique_GroupIDs],
+encodedMatrix = pd.DataFrame(data=-1, columns=[str(ggid) for ggid in Unique_GroupIDs],
                                  index=[str(posID) for posID in variants_pass_pos])
 cc = 0
 for gpid in Unique_GroupIDs:
@@ -298,7 +298,7 @@ for gpid in Unique_GroupIDs:
     cc += 1
 
 ###### Encoding - scheme 2: presence/absence-based
-encodedMatrix_presAbs = pandas.DataFrame(data=-1, columns=[str(ggid) for ggid in Unique_GroupIDs],
+encodedMatrix_presAbs = pd.DataFrame(data=-1, columns=[str(ggid) for ggid in Unique_GroupIDs],
                                          index=[str(posID) for posID in variants_pass_pos])
 cc = 0
 for gpid in Unique_GroupIDs:
