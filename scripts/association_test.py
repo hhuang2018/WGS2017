@@ -192,20 +192,31 @@ def plot_p_value(p_value_table, title, y_label):
 
 ### parse input
 parser = OptionParser()
-parser.add_option("-f", "--file", dest="filename",
-                  help="Open Zarr file", metavar="FILE")
-parser.add_option("-s", "--sample", dest="filename",
+#parser.add_option("-i", "--input", dest="input_filename",
+#                  action = 'store', type = "string",
+#                  help="Open Zarr file", metavar="FILE")
+parser.add_option("-s", "--sample", dest="sample_metadata",
+                  action = 'store', type = "string",
                   help="Sample metatdata", metavar="FILE")
+parser.add_option("-z", "--zarrfile", dest="zarr_filename",
+                  action = 'store', type = "string",
+                  help="Zarrr file", metavar="FILE")
+parser.add_option("-g", "--group", dest="chromID",
+                  action='store', type="string",
+                  help="Chromosome ID")
 parser.add_option("-q", "--quiet",
                   action="store_false", dest="verbose", default=True,
                   help="don't print status messages to stdout")
 
 (options, args) = parser.parse_args()
 
+zarr_path = options.input_filename
+chromID = options.chromID
+samples_fn = options.sample_metadata
 
 ## load variants
-callset = zarr.open_group(zarr_path+'all_chr22_genotypes.zarr', mode='r')
-variants = allel.VariantChunkedTable(callset['chr22']['variants'],
+callset = zarr.open_group(zarr_path, mode='r')
+variants = allel.VariantChunkedTable(callset['chr'+chromID]['variants'],
                                      names=['POS', 'REF', 'ALT', 'AN', 'AC', 'numalt'],
                                      index='POS')
 #chrom = 'chr22'
@@ -236,7 +247,7 @@ variants_pass_pos = pos.compress(variant_selection)
 # variants_pass_pos
 
 ## Genoyptes
-genotypes = allel.GenotypeChunkedArray(callset['chr22/calldata/GT'])
+genotypes = allel.GenotypeChunkedArray(callset['chr'+chromID+'/calldata/GT'])
 genotypes_subset = genotypes.subset(variant_selection, )
 
 #### Sample metadata

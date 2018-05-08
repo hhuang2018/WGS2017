@@ -12,16 +12,16 @@ from pandas_plink import read_plink
 #from pandas import DataFrame
 import numpy as np
 
-from pyspark import SparkContext as sc
+#from pyspark import SparkContext as sc
 
 #import argparse
 
 #import graphviz
 #from pandas_plink import example_file_prefix
 
-#plink_fp = "../Data/" 
-#metadata_fp = "../Data/available_cases.csv"
-#output = '../Data/'
+plink_fp = "../Data/" 
+metadata_fp = "../Data/available_cases.csv"
+output = '../Data/'
 
 ## EC2
 #plink_fp = "/home/hhuang/efs/GWASH_IMPUTED_DATA/ImputeQC/"
@@ -67,6 +67,8 @@ for chrom in chrList:
         np.savez(output+'BMT_mm_table_chr_'+str(chrom)+'.npz', mm_table = BMT_mm_table, ID_table = metadata_avail_cases)
     except FileNotFoundError as e:
         print(e)
+        
+    
         
 
 
