@@ -282,6 +282,8 @@ samples_subset.reset_index(drop=True, inplace=True)
 
 Unique_GroupIDs = samples_subset.GroupID.unique()
 
+SampleIDs = list(callset['chr'+chromID+'/Samples'])
+
 ##### Encoding - scheme 1: count-based
 encodedMatrix = pd.DataFrame(data=-1, columns=[str(ggid) for ggid in Unique_GroupIDs],
                                  index=[str(posID) for posID in variants_pass_pos])
