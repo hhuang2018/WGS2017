@@ -11,7 +11,7 @@ import scipy as sp
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
-%matplotlib inline
+#%matplotlib inline
 import seaborn as sns
 sns.set_style('white')
 sns.set_style('ticks')
