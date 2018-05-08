@@ -54,6 +54,7 @@ def plot_variant_hist(f, bins=30):
     ax.set_xlabel(f)
     ax.set_ylabel('No. variants')
     ax.set_title('Variant %s distribution' % f)
+    plt.gca().set_xticks([2, 3, 4])
     return fig
 
 #  functions to compare two genotypes and return an encoded value
@@ -204,6 +205,9 @@ parser.add_option("-z", "--zarrfile", dest="zarr_filename",
 parser.add_option("-g", "--group", dest="chromID",
                   action='store', type="string",
                   help="Chromosome ID")
+parser.add_option("-o", "--output", dest="output_fp",
+                  action='store', type="string",
+                  help="Chromosome ID")
 parser.add_option("-q", "--quiet",
                   action="store_false", dest="verbose", default=True,
                   help="don't print status messages to stdout")
@@ -213,6 +217,7 @@ parser.add_option("-q", "--quiet",
 zarr_path = options.input_filename
 chromID = options.chromID
 samples_fn = options.sample_metadata
+output_fp = options.output_fp
 
 ## load variants
 callset = zarr.open_group(zarr_path, mode='r')
@@ -231,10 +236,12 @@ pos = variants['POS'][:]
 
 # a plot with the SNP positions from our chosen chromosome.
 f = plot_windowed_variant_density(pos, window_size=100000, title='Raw variant density')
-f.savefig(output_fn+'')
+f.savefig(output_fp+'/'+chromID+'RawVariantsDensity.pdf', , bbox_inches='tight')
+
 # See how many biallelic, triallelic and quadriallelic SNPs we have.
-plot_variant_hist('numalt', bins=np.arange(1.5, 5.5, 1))
-plt.gca().set_xticks([2, 3, 4])
+f2 = plot_variant_hist('numalt', bins=np.arange(1.5, 5.5, 1))
+# plt.gca().set_xticks([2, 3, 4])
+f2.savefig(output_fp+'/'+chromID+'MultiAlelles.pdf', , bbox_inches='tight')
 
 #### variant filtering
 filter_expression = '(AN >= 800)'
@@ -300,20 +307,24 @@ for gpid in Unique_GroupIDs:
 ##### chi-square test - count-based scheme
 alpha = 0.05
 contin_table, p_value_tb_count = contingency_table(encodedMatrix, samples_subset)
-plot_p_value(p_value_tb_count, 'Count-based Scheme Chi-square test p-values', alpha, 'p-values')
+f3 = plot_p_value(p_value_tb_count, 'Count-based Scheme Chi-square test p-values', alpha, 'p-values')
+f3.savefig(output_fp+'/'+chromID+'CountBased_pvalues.pdf', , bbox_inches='tight')
 
 positive_p_values_count = p_value_tb_count.loc[p_value_tb_count > 0]
 negative_p_values_count = p_value_tb_count.loc[p_value_tb_count <= 0]
 
 log_p_values_count = -np.log(positive_p_values_count)
-plot_p_value(log_p_values_count, 'Count-based Scheme Chi-square test p-values (-log(p))', -np.log(alpha), '-log(p)')
+f4 = plot_p_value(log_p_values_count, 'Count-based Scheme Chi-square test p-values (-log(p))', -np.log(alpha), '-log(p)')
+f4.savefig(output_fp+'/'+chromID+'CountBased_Log_pvalues.pdf', , bbox_inches='tight')
 
 #### chi-square test - presence/absence-based scheme
 contin_table, p_value_tb_presabs = contingency_table(encodedMatrix, samples_subset)
-plot_p_value(p_value_tb_presabs, 'Presence/absence-based Scheme Chi-square test p-values', alpha, 'p-values')
+f5 = plot_p_value(p_value_tb_presabs, 'Presence/absence-based Scheme Chi-square test p-values', alpha, 'p-values')
+f5.savefig(output_fp+'/'+chromID+'Presabsence_pvalues.pdf', , bbox_inches='tight')
 
 positive_p_values_presabs = p_value_tb_presabs.loc[p_value_tb_presabs > 0]
 negative_p_values_presabs = p_value_tb_presabs.loc[p_value_tb_presabs <= 0]
 
 log_p_values_presabs = -np.log(positive_p_values_presabs)
-plot_p_value(log_p_values_presabs, 'Presence/absence-based Scheme Chi-square test p-values (-log(p))', -np.log(alpha), '-log(p)')
+f6 = plot_p_value(log_p_values_presabs, 'Presence/absence-based Scheme Chi-square test p-values (-log(p))', -np.log(alpha), '-log(p)')
+f6.savefig(output_fp+'/'+chromID+'Presabsence_Log_pvalues.pdf', , bbox_inches='tight')
