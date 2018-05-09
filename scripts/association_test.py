@@ -267,7 +267,7 @@ genotypes_subset = genotypes.subset(variant_selection, )
 
 #### Sample metadata
 # samples_fn = '/Users/hhuang2 (Deleted)/Documents/NGSProject/2018WGS/Data/ID_table_wIndex.csv'
-samples = pd.DataFrame.read_csv(samples_fn)
+samples = pd.read_csv(samples_fn)
 # samples.head()
 
 # paired groups filtering
