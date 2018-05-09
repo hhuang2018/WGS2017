@@ -7,7 +7,7 @@ Created on Thu Apr 26 10:31:17 2018
 """
 import pickle
 import numpy as np
-import scipy as sp
+from scipy import stats as sci_stats
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -142,7 +142,7 @@ def contingency_table(encoded_matrix, sample_table):
                 conting_table.loc[pos, 'control'][index2] = controlSumTable[index2]
             # conting_table.loc[pos,'total'] = np.sum(conting_table.loc[pos,])
             try:
-                _, p_value_table.loc[pos], _, _ = sp.stats.chi2_contingency(conting_table.loc[pos,])
+                _, p_value_table.loc[pos], _, _ = sci_stats.chi2_contingency(conting_table.loc[pos,])
             except ValueError as ve:
                 p_value_table.loc[pos] = -1
     else:
@@ -158,7 +158,7 @@ def contingency_table(encoded_matrix, sample_table):
             conting_table.loc[pos, 'control'][index2] = controlSumTable[index2]
 
         try:
-            _, p_value_table, _, _ = sp.stats.chi2_contingency(conting_table)
+            _, p_value_table, _, _ = sci_stats.chi2_contingency(conting_table)
         except ValueError as ve:
             p_value_table = -1
 
