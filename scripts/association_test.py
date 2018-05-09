@@ -212,7 +212,10 @@ parser.add_option("-g", "--group", dest="chromID",
                   help="Chromosome ID")
 parser.add_option("-o", "--output", dest="output_fp",
                   action='store', type="string",
-                  help="Chromosome ID")
+                  help="output file path")
+parser.add_option("-a", "--alpha", dest="alpha", default=0.05,
+                  action='store', type="double",
+                  help="Confidence level alpha for p-values")
 parser.add_option("-q", "--quiet",
                   action="store_false", dest="verbose", default=True,
                   help="don't print status messages to stdout")
@@ -223,6 +226,7 @@ zarr_path = options.zarr_filename
 chromID = options.chromID
 samples_fn = options.sample_metadata
 output_fp = options.output_fp
+alpha = options.alpha
 
 ## load variants
 callset = zarr.open_group(zarr_path, mode='r')
@@ -315,14 +319,14 @@ for gpid in Unique_GroupIDs:
     cc += 1
 
 ##### chi-square test - count-based scheme
-alpha = 0.05
+# alpha = 0.05
 contin_table, p_value_tb_count = contingency_table(encodedMatrix, samples_subset)
 #3 = plot_p_value(p_value_tb_count, 'Count-based Scheme Chi-square test p-values', alpha, 'p-values')
 #f3.savefig(output_fp+'/'+chromID+'CountBased_pvalues.pdf', bbox_inches='tight')
 save_object(p_value_tb_count, output_fp+'/chr'+chromID+'_CountBased_pvalues.pkl')
 
-#positive_p_values_count = p_value_tb_count.loc[p_value_tb_count > 0]
-negative_p_values_count = p_value_tb_count.loc[p_value_tb_count <= 0]
+positive_p_values_count = p_value_tb_count.loc[p_value_tb_count > 0]
+#negative_p_values_count = p_value_tb_count.loc[p_value_tb_count <= 0]
 
 log_p_values_count = -np.log(positive_p_values_count)
 #f4 = plot_p_value(log_p_values_count, 'Count-based Scheme Chi-square test p-values (-log(p))', -np.log(alpha), '-log(p)')
