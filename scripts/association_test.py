@@ -214,7 +214,7 @@ parser.add_option("-o", "--output", dest="output_fp",
                   action='store', type="string",
                   help="output file path")
 parser.add_option("-a", "--alpha", dest="alpha", default=0.05,
-                  action='store', type="double",
+                  action='store', type="float",
                   help="Confidence level alpha for p-values")
 parser.add_option("-q", "--quiet",
                   action="store_false", dest="verbose", default=True,
