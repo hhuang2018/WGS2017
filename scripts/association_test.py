@@ -303,6 +303,8 @@ for gpid in Unique_GroupIDs:
     encodedMatrix.loc[:, str(gpid)] = np.apply_along_axis(encode_mmCount, 1, combined_genotypes)
     cc += 1
 
+save_object(encodedMatrix, output_fp+'/chr'+chromID+'_EncodedMatrix_CountBased.pkl')
+
 ###### Encoding - scheme 2: presence/absence-based
 encodedMatrix_presAbs = pd.DataFrame(data=-1, columns=[str(ggid) for ggid in Unique_GroupIDs],
                                          index=[str(posID) for posID in variants_pass_pos])
@@ -317,6 +319,8 @@ for gpid in Unique_GroupIDs:
 
     encodedMatrix_presAbs.loc[:, str(gpid)] = np.apply_along_axis(encode_mmPresAbs, 1, combined_genotypes)
     cc += 1
+
+save_object(encodedMatrix_presAbs, output_fp+'/chr'+chromID+'_EncodedMatrix_presabs.pkl')
 
 ##### chi-square test - count-based scheme
 # alpha = 0.05
