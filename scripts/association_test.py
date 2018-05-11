@@ -133,9 +133,22 @@ def contingency_table(encoded_matrix, sample_table):
                                          names=['POS', 'case-control']))
         p_value_table = pd.Series(0, index=encoded_matrix.index)
 
-        for pos in encoded_matrix.index:
-            caseSumTable = caseTable.loc[pos, :].value_counts()
-            controlSumTable = controlTable.loc[pos, :].value_counts()
+        uniq_index = np.unique(encoded_matrix.index)
+
+        for pos in uniq_index:
+            #caseSumTable = caseTable.loc[pos, :].value_counts()
+            #controlSumTable = controlTable.loc[pos, :].value_counts()
+            try:
+                caseSumTable = caseTable.loc[pos, :].value_counts()
+            except AttributeError as ae:  # duplicated location
+                temp_tb = caseTable.loc[pos, :].sum() / 2
+                caseSumTable = temp_tb.value_counts()
+            try:
+                controlSumTable = controlTable.loc[pos, :].value_counts()
+            except AttributeError as ae:
+                tempt_tb = controlTable.loc[pos, :].sum() / 2
+                controlSumTable = tempt_tb.value_counts()
+
             for index1 in caseSumTable.index:
                 conting_table.loc[pos, 'case'][index1] = caseSumTable[index1]
             for index2 in controlSumTable.index:
