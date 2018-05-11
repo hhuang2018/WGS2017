@@ -111,11 +111,13 @@ def contingency_table(encoded_matrix, sample_table):
     '''
     caseIDs = sample_table[sample_table.Group == 'a'].GroupID.unique()
     controlIDs = sample_table[sample_table.Group == 'n'].GroupID.unique()
+    uniq_index = np.unique(encoded_matrix.index)
 
     if encoded_matrix.shape[0] > 1:
         # multi row contingency table
+
         row_index = add_case_control(
-            encoded_matrix.index)  # [(iid, 'case'), (iid, 'control'), (iid, 'total') for iid in row_index]
+            uniq_index)  # [(iid, 'case'), (iid, 'control'), (iid, 'total') for iid in row_index]
         caseTable = encoded_matrix.loc[:, [str(iid) for iid in caseIDs]]
         controlTable = encoded_matrix.loc[:, [str(iid) for iid in controlIDs]]
     else:
@@ -131,23 +133,20 @@ def contingency_table(encoded_matrix, sample_table):
                                      index=pd.MultiIndex.from_tuples(
                                          row_index,
                                          names=['POS', 'case-control']))
-        p_value_table = pd.Series(0, index=encoded_matrix.index)
-
-        uniq_index = np.unique(encoded_matrix.index)
+        p_value_table = pd.Series(0, index=uniq_index)
 
         for pos in uniq_index:
-            #caseSumTable = caseTable.loc[pos, :].value_counts()
-            #controlSumTable = controlTable.loc[pos, :].value_counts()
+
             try:
                 caseSumTable = caseTable.loc[pos, :].value_counts()
             except AttributeError as ae:  # duplicated location
                 temp_tb = caseTable.loc[pos, :].sum() / 2
-                caseSumTable = temp_tb.value_counts()
+                caseSumTable = tempt_tb.astype('int').value_counts()
             try:
                 controlSumTable = controlTable.loc[pos, :].value_counts()
             except AttributeError as ae:
                 tempt_tb = controlTable.loc[pos, :].sum() / 2
-                controlSumTable = tempt_tb.value_counts()
+                controlSumTable = tempt_tb.astype('int').value_counts()
 
             for index1 in caseSumTable.index:
                 conting_table.loc[pos, 'case'][index1] = caseSumTable[index1]
@@ -155,7 +154,7 @@ def contingency_table(encoded_matrix, sample_table):
                 conting_table.loc[pos, 'control'][index2] = controlSumTable[index2]
             # conting_table.loc[pos,'total'] = np.sum(conting_table.loc[pos,])
             try:
-                _, p_value_table.loc[pos], _, _ = sci_stats.chi2_contingency(conting_table.loc[pos,])
+                _, p_value_table.loc[pos], _, _ = sp.stats.chi2_contingency(conting_table.loc[pos,])
             except ValueError as ve:
                 p_value_table.loc[pos] = -1
     else:
@@ -171,7 +170,7 @@ def contingency_table(encoded_matrix, sample_table):
             conting_table.loc[pos, 'control'][index2] = controlSumTable[index2]
 
         try:
-            _, p_value_table, _, _ = sci_stats.chi2_contingency(conting_table)
+            _, p_value_table, _, _ = sp.stats.chi2_contingency(conting_table)
         except ValueError as ve:
             p_value_table = -1
 
