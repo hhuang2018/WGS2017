@@ -141,12 +141,12 @@ def contingency_table(encoded_matrix, sample_table):
                 caseSumTable = caseTable.loc[pos, :].value_counts()
             except AttributeError as ae:  # duplicated location
                 temp_tb = caseTable.loc[pos, :].sum() / 2
-                caseSumTable = tempt_tb.astype('int').value_counts()
+                caseSumTable = temp_tb.astype('int').value_counts()
             try:
                 controlSumTable = controlTable.loc[pos, :].value_counts()
             except AttributeError as ae:
-                tempt_tb = controlTable.loc[pos, :].sum() / 2
-                controlSumTable = tempt_tb.astype('int').value_counts()
+                temp_tb = controlTable.loc[pos, :].sum() / 2
+                controlSumTable = temp_tb.astype('int').value_counts()
 
             for index1 in caseSumTable.index:
                 conting_table.loc[pos, 'case'][index1] = caseSumTable[index1]
@@ -339,7 +339,7 @@ save_object(encodedMatrix_presAbs, output_fp+'/chr'+chromID+'_EncodedMatrix_pres
 contin_table, p_value_tb_count = contingency_table(encodedMatrix, samples_subset)
 #3 = plot_p_value(p_value_tb_count, 'Count-based Scheme Chi-square test p-values', alpha, 'p-values')
 #f3.savefig(output_fp+'/'+chromID+'CountBased_pvalues.pdf', bbox_inches='tight')
-save_object(p_value_tb_count, output_fp+'/chr'+chromID+'_CountBased_pvalues.pkl')
+save_object([contin_table, p_value_tb_count], output_fp+'/chr'+chromID+'_CountBased_pvalues.pkl')
 
 positive_p_values_count = p_value_tb_count.loc[p_value_tb_count > 0]
 #negative_p_values_count = p_value_tb_count.loc[p_value_tb_count <= 0]
@@ -348,14 +348,14 @@ log_p_values_count = -np.log(positive_p_values_count)
 #f4 = plot_p_value(log_p_values_count, 'Count-based Scheme Chi-square test p-values (-log(p))', -np.log(alpha), '-log(p)')
 #f4.savefig(output_fp+'/'+chromID+'CountBased_Log_pvalues.pdf', bbox_inches='tight')
 
-save_object(log_p_values_count, output_fp+'/chr'+chromID+'_CountBased_Log_pvalues.pkl')
+save_object([contin_table, log_p_values_count], output_fp+'/chr'+chromID+'_CountBased_Log_pvalues.pkl')
 
 #### chi-square test - presence/absence-based scheme
 contin_table, p_value_tb_presabs = contingency_table(encodedMatrix, samples_subset)
 #f5 = plot_p_value(p_value_tb_presabs, 'Presence/absence-based Scheme Chi-square test p-values', alpha, 'p-values')
 #f5.savefig(output_fp+'/'+chromID+'Presabsence_pvalues.pdf', bbox_inches='tight')
 
-save_object(p_value_tb_presabs, output_fp+'/chr'+chromID+'_Presabsence_pvalues.pkl')
+save_object([contin_table, p_value_tb_presabs], output_fp+'/chr'+chromID+'_Presabsence_pvalues.pkl')
 
 positive_p_values_presabs = p_value_tb_presabs.loc[p_value_tb_presabs > 0]
 #negative_p_values_presabs = p_value_tb_presabs.loc[p_value_tb_presabs <= 0]
@@ -364,4 +364,4 @@ log_p_values_presabs = -np.log(positive_p_values_presabs)
 #f6 = plot_p_value(log_p_values_presabs, 'Presence/absence-based Scheme Chi-square test p-values (-log(p))', -np.log(alpha), '-log(p)')
 #f6.savefig(output_fp+'/'+chromID+'Presabsence_Log_pvalues.pdf', bbox_inches='tight')
 
-save_object(p_value_tb_presabs, output_fp+'/chr'+chromID+'_Presabsence_Log_pvalues.pkl')
+save_object([contin_table, log_p_values_presabs], output_fp+'/chr'+chromID+'_Presabsence_Log_pvalues.pkl')
