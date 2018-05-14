@@ -8,6 +8,7 @@ Created on Thu Apr 26 10:31:17 2018
 import pickle
 import numpy as np
 from scipy import stats as sci_stats
+import scipy as sp
 import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
