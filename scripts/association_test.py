@@ -70,14 +70,21 @@ def encode_mmCount(genotype1):  # , genotype2 = None):
     genotype2 = genotype1[2:]
     genotype1 = temp
 
+    common_element_len = len(set(genotype1) & set(genotype2))
+    new_code = -1
     if -1 in genotype1 or -1 in genotype2:  # missing genotypes
-        return -1
-    elif len(set(genotype1) & set(genotype2)) == 2:  # both matched
-        return 0
-    elif len(set(genotype1) & set(genotype2)) == 1:  # one matched
-        return 1
-    elif len(set(genotype1) & set(genotype2)) == 0:  # both mismatched
-        return 2
+        new_code =  -1
+    elif common_element_len == 2# len(set(genotype1) & set(genotype2)) == 2:  # both matched
+        new_code =  0
+    elif common_element_len == 1:  # one matched
+        if len(set(genotype1)) == 1 and len(set(genotype2)) == 1:
+            new_code =  0  # both matched
+        else:
+            new_code =  1  # one mismatch
+    elif common_element_len == 0:  # both mismatched
+        new_code =  2
+
+    return new_code
 
 
 def encode_mmPresAbs(genotype1):  # , genotype2 = None):
@@ -89,6 +96,8 @@ def encode_mmPresAbs(genotype1):  # , genotype2 = None):
     if -1 in genotype1 or -1 in genotype2:  # missing genotypes
         return -1
     elif len(set(genotype1) & set(genotype2)) == 2:  # both matched
+        return 0
+    elif len(set(genotype1) & set(genotype2)) == 1 and len(set(genotype1)) == 1 and len(set(genotype2)) == 1:
         return 0
     else:  # one or two mismatched
         return 1
