@@ -64,7 +64,7 @@ def plot_variant_hist(f, bins=30):
     return fig
 '''
 #  functions to compare two genotypes and return an encoded value
-def encode_mmCount(genotype1):  # , genotype2 = None):
+def encode_mmCount(genotype1):   # , genotype2 = None):
     # if genotype2 == None:
     temp = genotype1[:2]
     genotype2 = genotype1[2:]
@@ -73,16 +73,16 @@ def encode_mmCount(genotype1):  # , genotype2 = None):
     common_element_len = len(set(genotype1) & set(genotype2))
     new_code = -1
     if -1 in genotype1 or -1 in genotype2:  # missing genotypes
-        new_code =  -1
-    elif common_element_len == 2# len(set(genotype1) & set(genotype2)) == 2:  # both matched
-        new_code =  0
-    elif common_element_len == 1:  # one matched
+        new_code = -1
+    elif common_element_len == 2:    # len(set(genotype1) & set(genotype2)) == 2:  # both matched
+        new_code = 0
+    elif common_element_len == 1:    # one matched
         if len(set(genotype1)) == 1 and len(set(genotype2)) == 1:
-            new_code =  0  # both matched
+            new_code = 0  # both matched
         else:
-            new_code =  1  # one mismatch
+            new_code = 1  # one mismatch
     elif common_element_len == 0:  # both mismatched
-        new_code =  2
+        new_code = 2
 
     return new_code
 
