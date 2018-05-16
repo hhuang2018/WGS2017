@@ -47,7 +47,7 @@ def encode_group_mmtype(genotypes):
 
 def remaining_gt(genotype, common_gt):
     if len(set(genotype) - common_gt) == 1:  # mismatched type
-        gt = list(set(genotype1) - common_gt)[0]
+        gt = list(set(genotype) - common_gt)[0]
     else:
         gt = list(common_gt)[0]
 
