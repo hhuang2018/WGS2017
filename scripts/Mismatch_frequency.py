@@ -89,6 +89,17 @@ def encoded_mmtype(gt1, gt2):
     return new_code
 
 
+def frequency_table(gt_row):
+    gt_row = pd.Series(gt_row)
+
+    freq_table = np.zeros(8)
+    stats_tb = gt_row.value_counts()
+
+    for i in range(len(stats_tb)):
+        freq_table[stats_tb.index[i]] = stats_tb.iloc[i]
+
+    return freq_table
+
 # parse input
 parser = OptionParser()
 
@@ -173,3 +184,13 @@ for gpid in Unique_GroupIDs:
     cc += 1
 
 encodedMatrix.to_hdf(output_fp+'/chr'+chromID+'_mismatch_type_encoding.h5', key='chr'+chromID)
+
+# calculate the frequencies
+
+freq_col_name = ['Match', 'REF.ALT1', 'REF.ALT2', 'ALT1.REF', 'ALT1.ALT2', 'ALT2.REF', 'ALT2.ALT1', 'Missing']
+
+all_freq_table1 = np.apply_along_axis(frequency_table, 1, encodedMatrix)
+
+all_freq_table = pd.DataFrame(all_freq_table1, columns=freq_col_name, index=[str(posID) for posID in variants_pass_pos])
+
+all_freq_table.to_hdf(output_fp+'/chr'+chromID+'_mismatch_type_frequency_table.h5', key='chr'+chromID)
