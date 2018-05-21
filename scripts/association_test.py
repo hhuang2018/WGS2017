@@ -361,11 +361,11 @@ log_p_values_count = -np.log(positive_p_values_count)
 save_object([contin_table, log_p_values_count], output_fp+'/chr'+chromID+'_CountBased_Log_pvalues.pkl')
 
 #### chi-square test - presence/absence-based scheme
-contin_table, p_value_tb_presabs = contingency_table(encodedMatrix, samples_subset)
+contin_table_pres, p_value_tb_presabs = contingency_table(encodedMatrix_presAbs, samples_subset)
 #f5 = plot_p_value(p_value_tb_presabs, 'Presence/absence-based Scheme Chi-square test p-values', alpha, 'p-values')
 #f5.savefig(output_fp+'/'+chromID+'Presabsence_pvalues.pdf', bbox_inches='tight')
 
-save_object([contin_table, p_value_tb_presabs], output_fp+'/chr'+chromID+'_Presabsence_pvalues.pkl')
+save_object([contin_table_pres, p_value_tb_presabs], output_fp+'/chr'+chromID+'_Presabsence_pvalues.pkl')
 
 positive_p_values_presabs = p_value_tb_presabs.loc[p_value_tb_presabs > 0]
 #negative_p_values_presabs = p_value_tb_presabs.loc[p_value_tb_presabs <= 0]
@@ -374,4 +374,4 @@ log_p_values_presabs = -np.log(positive_p_values_presabs)
 #f6 = plot_p_value(log_p_values_presabs, 'Presence/absence-based Scheme Chi-square test p-values (-log(p))', -np.log(alpha), '-log(p)')
 #f6.savefig(output_fp+'/'+chromID+'Presabsence_Log_pvalues.pdf', bbox_inches='tight')
 
-save_object([contin_table, log_p_values_presabs], output_fp+'/chr'+chromID+'_Presabsence_Log_pvalues.pkl')
+save_object([contin_table_pres, log_p_values_presabs], output_fp+'/chr'+chromID+'_Presabsence_Log_pvalues.pkl')
