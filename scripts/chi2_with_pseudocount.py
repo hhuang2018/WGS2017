@@ -11,7 +11,7 @@ from scipy import stats as sci_stats
 import scipy as sp
 import pandas as pd
 import re
-
+import pickle
 
 #  functions to compare two genotypes and return an encoded value
 def encode_mmCount(genotype1):  # , genotype2 = None):
