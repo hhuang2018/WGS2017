@@ -182,7 +182,7 @@ for EnMat_fp in count_based_encodedMatrix_file:
 
     # chi-square test - count-based scheme
     # alpha = 0.05
-    conting_table_count, p_value_tb_count = contingency_table1(encodedMatrix, samples_subset, 'count')
+    conting_table_count, p_value_tb_count = contingency_table1(EncodedMatrix, samples_subset, 'count')
 
     conting_table_count.to_hdf('Count_based_pseudoCount/Contingency_tb_count_' + EnMat_fp.split('_')[0] + '.h5', key=EnMat_fp.split('_')[0])
 
