@@ -68,7 +68,7 @@ for chrom in chrList:
                 # BMT_mm_table = np.concatenate((BMT_mm_table, bmt_gt), axis =0)
                 BMT_mm_table_count = np.vstack((BMT_mm_table_count, bmt_gt_count))
 
-            BMT_mm_table_count_da = da.from_array(BMT_mm_table_count, chunks=(1000, 1000))
+            BMT_mm_table_count_da = da.from_array(BMT_mm_table_count, chunks=(1000,))
 
 
             if BMT_mm_table_count_dir.shape[0] == 0:
@@ -77,7 +77,7 @@ for chrom in chrList:
                 # BMT_mm_table = np.concatenate((BMT_mm_table, bmt_gt), axis =0)
                 BMT_mm_table_count_dir = np.vstack((BMT_mm_table_count_dir, bmt_gt_count_dir))
 
-            BMT_mm_table_count_dir_da = da.from_array(BMT_mm_table_count_dir, chunks=(1000, 1000))
+            BMT_mm_table_count_dir_da = da.from_array(BMT_mm_table_count_dir, chunks=(1000,))
 
             if BMT_mm_table_presabs.shape[0] == 0:
                 BMT_mm_table_presabs = bmt_gt_presAbs
@@ -85,7 +85,7 @@ for chrom in chrList:
                 # BMT_mm_table = np.concatenate((BMT_mm_table, bmt_gt), axis =0)
                 BMT_mm_table_presabs = np.vstack((BMT_mm_table_presabs, bmt_gt_presAbs))
 
-            BMT_mm_table_presabs_da = da.from_array(BMT_mm_table_presabs, chunks=(1000, 1000))
+            BMT_mm_table_presabs_da = da.from_array(BMT_mm_table_presabs, chunks=(1000,))
 
         BMT_mm_table_count_da.to_zarr(output+'Encoded.zarr/'+str(chrom)+'/count')
         BMT_mm_table_count_dir_da.to_zarr(output+'Encoded.zarr/'+str(chrom)+'/count_directed')
