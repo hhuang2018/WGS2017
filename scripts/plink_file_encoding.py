@@ -29,7 +29,7 @@ output = '/home/hhuang/data/GWAS/BMT_PresAbs_mm/'
 
 # parser = argparse.ArgumentParser()
 
-chrList = range(1, 23)  # chr 1:22
+chrList = range(2, 23)  # chr 1:22
 
 metadata_avail_cases = cf.readCaseInfo(metadata_fp)
 
@@ -68,15 +68,11 @@ for chrom in chrList:
                 # BMT_mm_table = np.concatenate((BMT_mm_table, bmt_gt), axis =0)
                 BMT_mm_table_count = np.vstack((BMT_mm_table_count, bmt_gt_count))
 
-
-
-
             if BMT_mm_table_count_dir.shape[0] == 0:
                 BMT_mm_table_count_dir = bmt_gt_count_dir
             else:
                 # BMT_mm_table = np.concatenate((BMT_mm_table, bmt_gt), axis =0)
                 BMT_mm_table_count_dir = np.vstack((BMT_mm_table_count_dir, bmt_gt_count_dir))
-
 
 
             if BMT_mm_table_presabs.shape[0] == 0:
