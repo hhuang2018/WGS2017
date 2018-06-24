@@ -91,17 +91,19 @@ y = [list(labels.Group[labels.GroupID == int(GroupID)])[0] for GroupID in Encode
 # number of variants
 num_variants = Encoded_mat.shape[1]
 
-p_value_table = pd.Series(0, index=Encoded_mat.columns)
+p_value_table = pd.Series(1, index=Encoded_mat.columns)
 
 # test each varaint
+r_y = StrVector(y)
 for ind in range(num_variants):
     #x_train = Encoded_mat.iloc[:, ind]
     #y_train = pd.DataFrame(y)
 
     r_x = Vector(Encoded_mat.loc[:, Encoded_mat.columns[ind]])
-    r_y = StrVector(y)
-
-    p_value_table.loc[Encoded_mat.columns[ind]] = list(r_logitRegression(r_x, r_y))[0]
+    try:
+        p_value_table.loc[Encoded_mat.columns[ind]] = list(r_logitRegression(r_x, r_y))[0]
+    except rpy2.rinterface.RRuntimeError as Ee:
+        print(Encoded_mat.columns[ind] + ' no association!')
 
 p_value_table.to_hdf(output_fp+'chr'+chromID+'_logitRegression_p_values.h5', key='chr_'+chromID, complib='blosc', complevel=9)
 
