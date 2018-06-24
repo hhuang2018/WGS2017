@@ -11,10 +11,10 @@ import scipy as sp
 import pandas as pd
 import rpy2
 from rpy2.robjects.packages import importr
-from rpy2.robjects import r, pandas2ri
+#from rpy2.robjects import r, pandas2ri
 import rpy2.robjects as ro
 
-import zarr
+#import zarr
 
 from optparse import OptionParser
 
