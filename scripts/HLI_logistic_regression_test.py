@@ -103,7 +103,8 @@ for ind in range(num_variants):
     try:
         p_value_table.loc[Encoded_mat.columns[ind]] = list(r_logitRegression(r_x, r_y))[0]
     except rpy2.rinterface.RRuntimeError as Ee:
-        print(Encoded_mat.columns[ind] + ' no association!')
+        print(Encoded_mat.columns[ind] + ' Cannot detect association!')
+        p_value_table.loc[Encoded_mat.columns[ind]] = -1
 
 p_value_table.to_hdf(output_fp+'chr'+chromID+'_logitRegression_p_values.h5', key='chr_'+chromID, complib='blosc', complevel=9)
 
