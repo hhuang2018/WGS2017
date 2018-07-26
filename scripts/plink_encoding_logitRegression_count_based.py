@@ -8,7 +8,7 @@ Created on Thur July 19 00:00:00 2018
 
 import sys
 
-sys.path.append('../utils/')
+sys.path.append('utils/')
 from utils import coreFunctions as cf
 import numpy as np
 import pandas as pd
