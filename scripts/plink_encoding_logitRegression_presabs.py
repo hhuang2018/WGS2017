@@ -8,7 +8,7 @@ Created on Thur July 19 00:00:00 2018
 
 import sys
 
-sys.path.append('/home/hhuang/WGS2018/utils/')
+# sys.path.append('/home/hhuang/WGS2018/utils/')
 from utils import coreFunctions as cf
 import numpy as np
 import pandas as pd
