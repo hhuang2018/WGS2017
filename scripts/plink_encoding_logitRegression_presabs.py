@@ -118,6 +118,10 @@ for chrom in chrList:
                                                                               filtered_index.count()))
         # logistic regression
         Encoded_mat = BMT_pdMtx_filtered
+
+        Encoded_mat.to_hdf(output_fp + 'EncodedMatrix/chr' + str(chrom) + '_EncodedMatrix_95filtered_' + mode + '.h5',
+                           key='chr_' + str(chrom), complib='blosc', complevel=9)
+
         y1 = [metadata_pd.loc[GroupID, 'agvhi24'] for GroupID in Encoded_mat.index]
         y2 = [metadata_pd.loc[GroupID, 'agvhi34'] for GroupID in Encoded_mat.index]
 
@@ -127,11 +131,18 @@ for chrom in chrList:
         p_value_table1 = pd.Series(1, index=Encoded_mat.columns)
         p_value_table2 = pd.Series(1, index=Encoded_mat.columns)
 
-        r_y1 = StrVector(y1) # aGVHD II ~ IV
-        r_y2 = StrVector(y2) # aGVHD III ~ IV
         for ind in range(num_variants):
 
-            r_x = Vector(Encoded_mat.loc[:, Encoded_mat.columns[ind]])
+            SNP_mat = pd.DataFrame(Encoded_mat.loc[:, Encoded_mat.columns[ind]])
+            SNP_mat['aGVHD24'] = y1
+            SNP_mat['aGVHD34'] = y2
+            SNP_mat_dropna = SNP_mat.dropna()  # drop nan
+
+            r_x = Vector(SNP_mat_dropna.iloc[:, 0])
+
+            r_y1 = StrVector(SNP_mat_dropna.iloc[:, 1])
+            r_y2 = StrVector(SNP_mat_dropna.iloc[:, 2])
+
             try:
                 p_value_table1.loc[Encoded_mat.columns[ind]] = list(r_logitRegression(r_x, r_y1))[0]
 
@@ -144,9 +155,6 @@ for chrom in chrList:
             except rpy2.rinterface.RRuntimeError as Ee:
                 print(Encoded_mat.columns[ind] + ' Cannot detect association! (aGVHD34)')
                 p_value_table2.loc[Encoded_mat.columns[ind]] = -1
-
-        Encoded_mat.to_hdf(output_fp+'EncodedMatrix/chr'+str(chrom)+'_EncodedMatrix_95filtered_' + mode + '.h5',
-                           key='chr_'+str(chrom), complib='blosc', complevel=9)
 
         p_value_table1.to_hdf(output_fp + 'p_values/chr' + str(chrom) + '_logitRegression_p_values_agvhd24_' + mode + '.h5',
                               key='chr_' + str(chrom), complib='blosc', complevel=9)

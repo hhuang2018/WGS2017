@@ -101,7 +101,6 @@ for chrom in chrList:
                 # BMT_mm_table = np.concatenate((BMT_mm_table, bmt_gt), axis =0)
                 BMT_mm_table_count_dir = np.vstack((BMT_mm_table_count_dir, bmt_gt_count_dir))
 
-
         # row index - metadata_avail_cases['BMTcase']
         BMT_pdMtx = pd.DataFrame(data=bmt_gt_count_dir, index=metadata_avail_cases['BMTcase'], columns = bim['snp'])
 
@@ -111,12 +110,16 @@ for chrom in chrList:
         # filter 95% call rate
         filtered_index = (1 - BMT_pdMtx.isnull().sum()/BMT_pdMtx.shape[0]) >= 0.95
         BMT_pdMtx_filtered = BMT_pdMtx.loc[:, filtered_index]
-        print('Chromosome {0} removed {1} ({2:.2f} %) out of {3} variants)'.format(chrom,
+        print('Chromosome {0} removed {1} ({2:.2f} %) out of {3} variants (95 % call rate)'.format(chrom,
                                                                               (filtered_index==False).sum(),
-                                                                              (filtered_index == False).sum()/filtered_index.count()*100,
+                                                                              (filtered_index==False).sum()/filtered_index.count()*100,
                                                                               filtered_index.count()))
+        BMT_pdMtx_filtered.to_hdf(output_fp + 'EncodedMatrix/chr' + str(chrom) + '_EncodedMatrix_95filtered_' + mode + '.h5',
+                           key='chr_' + str(chrom), complib='blosc', complevel=9)
+
         # logistic regression
         Encoded_mat = BMT_pdMtx_filtered
+
         y1 = [metadata_pd.loc[GroupID, 'agvhi24'] for GroupID in Encoded_mat.index]
         y2 = [metadata_pd.loc[GroupID, 'agvhi34'] for GroupID in Encoded_mat.index]
 
@@ -126,13 +129,20 @@ for chrom in chrList:
         p_value_table1 = pd.Series(1, index=Encoded_mat.columns)
         p_value_table2 = pd.Series(1, index=Encoded_mat.columns)
 
-        r_y1 = StrVector(y1)  # aGVHD II ~ IV
-        r_y2 = StrVector(y2)  # aGVHD III ~ IV
+        #r_y1 = StrVector(y1)  # aGVHD II ~ IV
+        #r_y2 = StrVector(y2)  # aGVHD III ~ IV
         for ind in range(num_variants):
             # x_train = Encoded_mat.iloc[:, ind]
             # y_train = pd.DataFrame(y)
+            SNP_mat = pd.DataFrame(Encoded_mat.loc[:, Encoded_mat.columns[ind]])
+            SNP_mat['aGVHD24'] = y1
+            SNP_mat['aGVHD34'] = y2
+            SNP_mat_dropna = SNP_mat.dropna() #drop nan
 
-            r_x = Vector(Encoded_mat.loc[:, Encoded_mat.columns[ind]])
+            r_x = Vector(SNP_mat_dropna.iloc[:, 0])
+
+            r_y1 = StrVector(SNP_mat_dropna.iloc[:, 1])
+            r_y2 = StrVector(SNP_mat_dropna.iloc[:, 2])
             try:
                 p_value_table1.loc[Encoded_mat.columns[ind]] = list(r_logitRegression(r_x, r_y1))[0]
 
@@ -145,9 +155,6 @@ for chrom in chrList:
             except rpy2.rinterface.RRuntimeError as Ee:
                 print(Encoded_mat.columns[ind] + ' Cannot detect association! (aGVHD34)')
                 p_value_table2.loc[Encoded_mat.columns[ind]] = -1
-
-        Encoded_mat.to_hdf(output_fp+'EncodedMatrix/chr'+str(chrom)+'_EncodedMatrix_95filtered_' + mode + '.h5',
-                           key='chr_'+str(chrom), complib='blosc', complevel=9)
 
         p_value_table1.to_hdf(
             output_fp + 'p_values/chr' + str(chrom) + '_logitRegression_p_values_agvhd24_' + mode + '.h5',
