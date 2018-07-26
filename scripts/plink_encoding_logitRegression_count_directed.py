@@ -75,9 +75,7 @@ metadata_pd.index = metadata_pd.index.map(str)
 
 
 for chrom in chrList:
-    BMT_mm_table_count = np.array([], dtype='float64')
-    # BMT_mm_table_count_dir = np.array([], dtype='float64')
-    # BMT_mm_table_presabs = np.array([], dtype='float64')
+    BMT_mm_table_count_dir = np.array([], dtype='float64')
 
     try:
         (bim, fam, bed) = read_plink(plink_fp + str(chrom) + 'bed')

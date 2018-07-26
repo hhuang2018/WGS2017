@@ -76,9 +76,7 @@ metadata_pd.index = metadata_pd.index.map(str)
 
 
 for chrom in chrList:
-    BMT_mm_table_count = np.array([], dtype='float64')
-    # BMT_mm_table_count_dir = np.array([], dtype='float64')
-    # BMT_mm_table_presabs = np.array([], dtype='float64')
+    BMT_mm_table_presabs = np.array([], dtype='float64')
 
     try:
         (bim, fam, bed) = read_plink(plink_fp + str(chrom) + 'bed')
@@ -103,7 +101,6 @@ for chrom in chrList:
             if BMT_mm_table_presabs.shape[0] == 0:
                 BMT_mm_table_presabs = bmt_gt_presAbs
             else:
-                BMT_mm_table = np.concatenate((BMT_mm_table, bmt_gt), axis =0)
                 BMT_mm_table_presabs = np.vstack((BMT_mm_table_presabs, bmt_gt_presAbs))
 
         # row index - metadata_avail_cases['BMTcase']
