@@ -68,8 +68,6 @@ metadata_avail_cases = cf.readCaseInfo(metadata_fp)
 
 num_case = len(metadata_avail_cases['BMTcase'])
 
-mode = 'count' # count; pres_abs; count_directed
-
 metadata_pd = pd.read_csv(metadata_fp, index_col=2)
 metadata_pd.index = metadata_pd.index.map(str)
 #agvhd24_labels = metadata_pd.loc[:,'agvhi24']
