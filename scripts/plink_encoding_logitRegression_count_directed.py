@@ -75,7 +75,7 @@ metadata_pd.index = metadata_pd.index.map(str)
 
 
 for chrom in chrList:
-    BMT_mm_table_count_dir = np.array([], dtype='float64')
+    # BMT_mm_table_count_dir = np.array([], dtype='float64')
 
     try:
         (bim, fam, bed) = read_plink(plink_fp + str(chrom) + 'bed')
@@ -83,8 +83,11 @@ for chrom in chrList:
         # fam - pandas.DataFrame – Samples.
         # G - numpy.ndarray – Genotype.
 
+        BMT_mm_table_count_dir = np.empty([num_case, bim.shape[0]], dtype='float64') - 1
+
         # fam.iid.head()
         # G.head()
+
         for case_index in range(num_case):
 
             bmt_fams = fam.query("iid in ['" + metadata_avail_cases['NMDP_DID'][case_index] +
@@ -95,11 +98,12 @@ for chrom in chrList:
 
             bmt_gt_count_dir = gt[:, 0] - gt[:, 1]  # mismatch with direction
 
-            if BMT_mm_table_count_dir.shape[0] == 0:
-                BMT_mm_table_count_dir = bmt_gt_count_dir
-            else:
+            BMT_mm_table_count_dir[case_index, :] = bmt_gt_count_dir
+            #if BMT_mm_table_count_dir.shape[0] == 0:
+            #    BMT_mm_table_count_dir = bmt_gt_count_dir
+            #else:
                 # BMT_mm_table = np.concatenate((BMT_mm_table, bmt_gt), axis =0)
-                BMT_mm_table_count_dir = np.vstack((BMT_mm_table_count_dir, bmt_gt_count_dir))
+            #    BMT_mm_table_count_dir = np.vstack((BMT_mm_table_count_dir, bmt_gt_count_dir))
 
         # row index - metadata_avail_cases['BMTcase']
         BMT_pdMtx = pd.DataFrame(data=bmt_gt_count_dir, index=metadata_avail_cases['BMTcase'], columns = bim['snp'])

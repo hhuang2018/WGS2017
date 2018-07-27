@@ -76,13 +76,14 @@ metadata_pd.index = metadata_pd.index.map(str)
 
 
 for chrom in chrList:
-    BMT_mm_table_presabs = np.array([], dtype='float64')
 
     try:
         (bim, fam, bed) = read_plink(plink_fp + str(chrom) + 'bed')
         # bim - pandas.DataFrame – Alleles.
         # fam - pandas.DataFrame – Samples.
         # G - numpy.ndarray – Genotype.
+
+        BMT_mm_table_presabs = np.empty([num_case, bim.shape[0]], dtype='float64') - 1
 
         # fam.iid.head()
         # G.head()
@@ -98,10 +99,12 @@ for chrom in chrList:
             bmt_gt_presAbs = bmt_gt_count
             bmt_gt_presAbs[bmt_gt_presAbs == 2] = 1 # mismatch presence-absence based
 
-            if BMT_mm_table_presabs.shape[0] == 0:
-                BMT_mm_table_presabs = bmt_gt_presAbs
-            else:
-                BMT_mm_table_presabs = np.vstack((BMT_mm_table_presabs, bmt_gt_presAbs))
+            BMT_mm_table_presabs[case_index, :] = bmt_gt_presAbs
+
+            #if BMT_mm_table_presabs.shape[0] == 0:
+            #    BMT_mm_table_presabs = bmt_gt_presAbs
+            #else:
+            #    BMT_mm_table_presabs = np.vstack((BMT_mm_table_presabs, bmt_gt_presAbs))
 
         # row index - metadata_avail_cases['BMTcase']
         BMT_pdMtx = pd.DataFrame(data=BMT_mm_table_presabs, index=metadata_avail_cases['BMTcase'], columns=bim['snp'])
