@@ -112,7 +112,7 @@ for chrom in chrList:
         if len(bim['snp'][bim['snp'].duplicated(False)]) > 0:
             print('>>>> Column(s) {0} have duplicates! Dropping all duplicated columns (SNPs)'.format(list(set(bim['snp'][bim['snp'].duplicated(False)]))))
 
-        BMT_pdMtx = pd.DataFrame(data=BMT_mm_table_presabs[:, ~(bim['snp'].duplicated(False))],
+        BMT_pdMtx = pd.DataFrame(data=BMT_mm_table_count_dir[:, ~(bim['snp'].duplicated(False))],
                                  index=metadata_avail_cases['BMTcase'],
                                  columns=bim['snp'][~(bim['snp'].duplicated(False))])
 
