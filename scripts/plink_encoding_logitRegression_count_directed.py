@@ -106,7 +106,16 @@ for chrom in chrList:
             #    BMT_mm_table_count_dir = np.vstack((BMT_mm_table_count_dir, bmt_gt_count_dir))
 
         # row index - metadata_avail_cases['BMTcase']
-        BMT_pdMtx = pd.DataFrame(data=bmt_gt_count_dir, index=metadata_avail_cases['BMTcase'], columns = bim['snp'])
+        # BMT_pdMtx = pd.DataFrame(data=bmt_gt_count_dir, index=metadata_avail_cases['BMTcase'], columns = bim['snp'])
+
+        # Remove all duplicated columns (SNPs)
+        if len(bim['snp'][bim['snp'].duplicated(False)]) > 0:
+            print('>>>> Column(s) {0} have duplicates! Dropping all duplicated columns (SNPs)'.format(list(set(bim['snp'][bim['snp'].duplicated(False)]))))
+
+        BMT_pdMtx = pd.DataFrame(data=BMT_mm_table_presabs[:, ~(bim['snp'].duplicated(False))],
+                                 index=metadata_avail_cases['BMTcase'],
+                                 columns=bim['snp'][~(bim['snp'].duplicated(False))])
+
 
         BMT_pdMtx.to_hdf(output_fp+'EncodedMatrix/chr'+str(chrom)+'_EncodedMatrix_original_' + mode + '.h5',
                          key='chr_'+str(chrom), complib='blosc', complevel=9)
