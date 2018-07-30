@@ -62,7 +62,7 @@ plink_fp = "/home/hhuang/efs/GWASH_IMPUTED_DATA/ImputeQC/"
 metadata_fp = "/home/hhuang/data/GWAS/available_cases.csv"
 output_fp = '/home/hhuang/data/GWAS/MismatchEncoded/' + mode + '/'
 
-chrList = range(1, 23)  # chr 1:22
+chrList = range(3, 23)  # chr 1:22
 
 metadata_avail_cases = cf.readCaseInfo(metadata_fp)
 
