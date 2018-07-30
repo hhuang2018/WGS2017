@@ -62,7 +62,7 @@ plink_fp = "/home/hhuang/efs/GWASH_IMPUTED_DATA/ImputeQC/"
 metadata_fp = "/home/hhuang/data/GWAS/available_cases.csv"
 output_fp = '/home/hhuang/data/GWAS/MismatchEncoded/' + mode + '/'
 
-chrList = range(1, 23)  # chr 1:22
+chrList = range(9, 23)  # chr 1:22
 
 metadata_avail_cases = cf.readCaseInfo(metadata_fp)
 
@@ -81,7 +81,7 @@ for chrom in chrList:
         (bim, fam, bed) = read_plink(plink_fp + str(chrom) + 'bed')
         # bim - pandas.DataFrame – Alleles.
         # fam - pandas.DataFrame – Samples.
-        # G - numpy.ndarray – Genotype.
+        # bed - numpy.ndarray – Genotype.
 
         BMT_mm_table_presabs = np.empty([num_case, bim.shape[0]], dtype='float64') - 1
 
@@ -107,7 +107,13 @@ for chrom in chrList:
             #    BMT_mm_table_presabs = np.vstack((BMT_mm_table_presabs, bmt_gt_presAbs))
 
         # row index - metadata_avail_cases['BMTcase']
-        BMT_pdMtx = pd.DataFrame(data=BMT_mm_table_presabs, index=metadata_avail_cases['BMTcase'], columns=bim['snp'])
+
+        if len(bim['snp'][bim['snp'].duplicated(False)]) > 0:
+            print('>>>> Column(s) {0} have duplicates! Dropping all duplicated columns (SNPs)'.format(list(set(bim['snp'][bim['snp'].duplicated(False)]))))
+
+        BMT_pdMtx = pd.DataFrame(data=BMT_mm_table_presabs[:, ~(bim['snp'].duplicated(False))],
+                                 index=metadata_avail_cases['BMTcase'],
+                                 columns=bim['snp'][~(bim['snp'].duplicated(False))])
 
         BMT_pdMtx.to_hdf(output_fp+'EncodedMatrix/chr'+str(chrom)+'_EncodedMatrix_original_' + mode + '.h5',
                          key='chr_'+str(chrom), complib='blosc', complevel=9)
