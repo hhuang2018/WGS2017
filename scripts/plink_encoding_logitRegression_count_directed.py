@@ -61,7 +61,7 @@ plink_fp = "/home/hhuang/efs/GWASH_IMPUTED_DATA/ImputeQC/"
 metadata_fp = "/home/hhuang/data/GWAS/available_cases.csv"
 output_fp = '/home/hhuang/data/GWAS/MismatchEncoded/' + mode + '/'
 
-chrList = range(1, 23)  # chr 1:22
+chrList = range(5, 23)  # chr 1:22
 
 metadata_avail_cases = cf.readCaseInfo(metadata_fp)
 
@@ -124,9 +124,9 @@ for chrom in chrList:
         filtered_index = (1 - BMT_pdMtx.isnull().sum()/BMT_pdMtx.shape[0]) >= 0.95
         BMT_pdMtx_filtered = BMT_pdMtx.loc[:, filtered_index]
         print('Chromosome {0} removed {1} ({2:.2f} %) out of {3} variants (95 % call rate)'.format(chrom,
-                                                                              (filtered_index==False).sum(),
-                                                                              (filtered_index==False).sum()/filtered_index.count()*100,
-                                                                              filtered_index.count()))
+                                                                                                   (filtered_index == False).sum(),
+                                                                                                   (filtered_index == False).sum()/filtered_index.count()*100,
+                                                                                                   filtered_index.count()))
         BMT_pdMtx_filtered.to_hdf(output_fp + 'EncodedMatrix/chr' + str(chrom) + '_EncodedMatrix_95filtered_' + mode + '.h5',
                            key='chr_' + str(chrom), complib='blosc', complevel=9)
 
