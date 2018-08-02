@@ -16,7 +16,7 @@ import gc
 mode = 'DR_genotype_encoding'
 ## EC2
 plink_fp = "/home/hhuang/efs/GWASH_IMPUTED_DATA/ImputeQC/"
-
+metadata_fp = "/home/hhuang/data/GWAS/available_cases.csv"
 output_fp = '/home/hhuang/data/GWAS/MismatchEncoded/' + mode + '/'
 
 chrList = range(1, 23)  # chr 1:22
