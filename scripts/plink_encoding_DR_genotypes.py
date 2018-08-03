@@ -5,6 +5,9 @@ Created on Thur July 19 00:00:00 2018
 
 @author: hhuang2
 """
+import sys
+
+# sys.path.append('/home/hhuang/WGS2018/utils/')
 from utils import coreFunctions as cf
 import numpy as np
 import pandas as pd
@@ -12,6 +15,42 @@ import pandas as pd
 from pandas_plink import read_plink
 
 import gc
+import rpy2
+from rpy2.robjects.packages import importr
+import rpy2.robjects as ro
+
+import pickle
+
+
+# R packages
+r = ro.r
+stats = importr('stats')
+base = importr('base')
+rGlimnnet = importr('glmnet')
+Vector = rpy2.robjects.vectors.IntVector
+StrVector = rpy2.robjects.vectors.StrVector
+
+# define R object function
+r('''
+        # create a function `LogisticRegression`
+        LogitRegression <- function(x, y) {
+            x[x==-1] = NA
+            snpData = cbind(x, y)
+
+            snpData = as.data.frame(snpData)
+            colnames(snpData) = c('gt', 'Outcome')
+
+            Logit_regression <- glm(formula = Outcome ~ gt, family = binomial(), data = snpData, na.action = na.exclude)
+
+            p_val <- coef(summary(Logit_regression))[2,'Pr(>|z|)']
+            return(p_val)
+            # return(summary(regression))
+        }
+        # call the function `f` with argument value 3
+
+        ''')
+
+r_logitRegression = ro.globalenv['LogitRegression']
 
 mode = 'DR_genotype_encoding'
 ## EC2
