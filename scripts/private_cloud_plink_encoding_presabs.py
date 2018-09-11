@@ -60,7 +60,7 @@ metadata_fp = "/home/hhuang/data/GWAS/unimputed/GWAS_cleaned_BMT_cases_info.csv"
 output_fp = '/home/hhuang/data/GWAS/unimputed//MismatchEncoded/' + mode + '/'
 
 metadata_avail_cases = pd.read_csv(metadata_fp, index_col=2)
-metadata_avail_cases.index = metadata_pd.index.map(str)
+metadata_avail_cases.index = metadata_avail_cases.index.map(str)
 num_case = metadata_avail_cases.shape[0]
 
 #agvhd24_labels = metadata_pd.loc[:,'agvhi24']
