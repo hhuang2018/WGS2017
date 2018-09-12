@@ -154,11 +154,11 @@ try:
 
     p_value_table1.to_hdf(
         output_fp + 'logitRegression_p_values_agvhd24_' + mode + '.h5',
-        key='chr_' + str(chrom), complib='blosc', complevel=9)
+        key=mode, complib='blosc', complevel=9)
 
     p_value_table2.to_hdf(
         output_fp + 'logitRegression_p_values_agvhd34_' + mode + '.h5',
-        key='chr_' + str(chrom), complib='blosc', complevel=9)
+        key=mode, complib='blosc', complevel=9)
 
     gc.collect()
 
