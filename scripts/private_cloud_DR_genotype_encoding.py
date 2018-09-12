@@ -95,10 +95,9 @@ try:
     # filter 95% call rate
     filtered_index = (1 - BMT_pdMtx.isnull().sum()/BMT_pdMtx.shape[0]) >= 0.95
     BMT_pdMtx_filtered = BMT_pdMtx.loc[:, filtered_index]
-    print('Chromosome {0} removed {1} ({2:.2f} %) out of {3} variants (95 % call rate)'.format(chrom,
-                                                                                               (filtered_index == False).sum(),
-                                                                                               (filtered_index == False).sum()/filtered_index.count()*100,
-                                                                                               filtered_index.count()))
+    print('Removed {0} ({1:.2f} %) out of {2} variants (95 % call rate)'.format((filtered_index == False).sum(),
+                                                                                (filtered_index == False).sum()/filtered_index.count()*100,
+                                                                                filtered_index.count()))
     BMT_pdMtx_filtered.to_hdf(output_fp + 'EncodedMatrix_95filtered_' + mode + '.h5',
                        key=mode, complib='blosc', complevel=9)
 
@@ -143,11 +142,11 @@ try:
 
     p_value_table1.to_hdf(
         output_fp + 'logitRegression_p_values_agvhd24_' + mode + '.h5',
-        key='chr_' + str(chrom), complib='blosc', complevel=9)
+        key=mode, complib='blosc', complevel=9)
 
     p_value_table2.to_hdf(
         output_fp + 'logitRegression_p_values_agvhd34_' + mode + '.h5',
-        key='chr_' + str(chrom), complib='blosc', complevel=9)
+        key=mode, complib='blosc', complevel=9)
 
     gc.collect()
 
