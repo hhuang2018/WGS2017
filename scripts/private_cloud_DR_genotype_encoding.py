@@ -104,8 +104,8 @@ try:
     # logistic regression
     Encoded_mat = BMT_pdMtx_filtered
 
-    y1 = [metadata_pd.loc[GroupID, 'agvhi24'] for GroupID in Encoded_mat.index]
-    y2 = [metadata_pd.loc[GroupID, 'agvhi34'] for GroupID in Encoded_mat.index]
+    y1 = [metadata_avail_cases.loc[GroupID, 'agvhi24'] for GroupID in Encoded_mat.index]
+    y2 = [metadata_avail_cases.loc[GroupID, 'agvhi34'] for GroupID in Encoded_mat.index]
 
     # number of variants
     num_variants = Encoded_mat.shape[1]
