@@ -54,16 +54,16 @@ r_logitRegression = ro.globalenv['LogitRegression']
 
 mode = 'DR_genotype_encoding'
 ## EC2
-plink_fp = "/home/hhuang/data/GWAS/unimputed/"
+plink_fp = "/home/hhuang/data/GWAS/unimputed/cleaned_BMT_cases/"
 metadata_fp = "/home/hhuang/data/GWAS/unimputed/GWAS_cleaned_BMT_cases_info.csv"
-output_fp = '/home/hhuang/data/GWAS/unimputed//MismatchEncoded/' + mode + '/'
+output_fp = '/home/hhuang/data/GWAS/unimputed/cleaned_BMT_cases/MismatchEncoded/' + mode + '/'
 
 metadata_avail_cases = pd.read_csv(metadata_fp, index_col=2)
 metadata_avail_cases.index = metadata_avail_cases.index.map(str)
 num_case = metadata_avail_cases.shape[0]
 
 try:
-    (bim, fam, bed) = read_plink(plink_fp + 'clean_BMT_cases_50_5_2.bed')
+    (bim, fam, bed) = read_plink(plink_fp + 'cleaned_BMT_cases.bed')
     # bim - pandas.DataFrame – Alleles.
     # fam - pandas.DataFrame – Samples.
     # G - numpy.ndarray – Genotype.
