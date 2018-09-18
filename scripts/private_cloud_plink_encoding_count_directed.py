@@ -80,13 +80,19 @@ try:
 
     for case_index in range(num_case):
 
-        bmt_fams = fam.query("iid in ['" + metadata_avail_cases.iloc[case_index]['did'] + "', '" +
-                             metadata_avail_cases.iloc[case_index]['rid'] + "']")
+        bmt_fams_d = fam.query("iid in ['" + metadata_avail_cases.iloc[case_index]['did'] + "']")
 
-        gt = bed[:, bmt_fams.i.values].compute()
+        bmt_fams_r = fam.query("iid in ['" + metadata_avail_cases.iloc[case_index]['rid'] + "']")
+
+        gt_d = bed[:, bmt_fams_d.i.values].compute()
+        gt_r = bed[:, bmt_fams_r.i.values].compute()
+
+        # gt = bed[:, bmt_fams.i.values].compute()
         # bmt_gt = abs(gt[[0]] - gt[[1]])
 
-        bmt_gt_count_dir = gt[:, 0] - gt[:, 1]  # mismatch with direction
+        # bmt_gt_count_dir = gt[:, 0] - gt[:, 1]  # mismatch with direction
+
+        bmt_gt_count_dir = gt_d - gt_r # mismatch with direction
 
         BMT_mm_table_count_dir[case_index, :] = bmt_gt_count_dir
 

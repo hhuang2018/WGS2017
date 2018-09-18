@@ -82,13 +82,15 @@ for chrom in chrList:
         # G.head()
 
         for case_index in range(num_case):
+            bmt_fams_d = fam.query("iid in ['" + metadata_avail_cases.iloc[case_index]['did'] + "']")
 
-            bmt_fams = fam.query("iid in ['" + metadata_avail_cases['NMDP_DID'][case_index] +
-                                 "', '" +
-                                 metadata_avail_cases['NMDP_RID'][case_index] + "']")
-            gt = bed[:, bmt_fams.i.values].compute()
+            bmt_fams_r = fam.query("iid in ['" + metadata_avail_cases.iloc[case_index]['rid'] + "']")
 
-            bmt_gt = gt[:, 0] * 3 + gt[:, 1]  # donor*3+recipient = gt code
+            gt_d = bed[:, bmt_fams_d.i.values].compute()
+            gt_r = bed[:, bmt_fams_r.i.values].compute()
+            #gt = bed[:, bmt_fams.i.values].compute()
+
+            bmt_gt = gt_d * 3 + gt_r  # donor * 3 + recipient = gt code
 
             DR_gt_encoding[case_index, :] = bmt_gt
 
