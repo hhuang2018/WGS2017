@@ -81,7 +81,7 @@ try:
 
         bmt_gt = gt_d * 3 + gt_r  # donor * 3 + recipient = gt code
 
-        DR_gt_encoding[case_index, :] = bmt_gt
+        DR_gt_encoding[case_index, :] = bmt_gt[:, 0]
 
     # Remove all duplicated columns (SNPs)
     if len(bim['snp'][bim['snp'].duplicated(False)]) > 0:

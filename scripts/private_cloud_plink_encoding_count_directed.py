@@ -94,7 +94,7 @@ try:
 
         bmt_gt_count_dir = gt_d - gt_r # mismatch with direction
 
-        BMT_mm_table_count_dir[case_index, :] = bmt_gt_count_dir
+        BMT_mm_table_count_dir[case_index, :] = bmt_gt_count_dir[:, 0]
 
     # Remove all duplicated columns (SNPs)
     if len(bim['snp'][bim['snp'].duplicated(False)]) > 0:
